@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List App</title>
+    <!-- Tải Tailwind CSS để hỗ trợ styling nhanh và responsive -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        /* Custom CSS sử dụng Grid cho mỗi task item */
+        .task-item {
+            display: grid;
+            /* Cấu trúc Grid: [Nội dung (rộng lớn)] [Nút Edit (nhỏ)] [Nút Delete (nhỏ)] */
+            grid-template-columns: 1fr auto auto; 
+            gap: 1rem;
+            align-items: center;
+            padding: 1rem;
+            background-color: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .task-item:last-child {
+            border-bottom: none;
+        }
+        .task-text {
+            word-break: break-word; /* Đảm bảo text không tràn ra ngoài */
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-8 flex justify-center items-start min-h-screen">
+
+    <div class="w-full max-w-xl bg-white shadow-2xl rounded-xl p-6 md:p-8 space-y-6">
+
+        <h1 class="text-3xl font-extrabold text-blue-700 text-center">Danh Sách Công Việc (To-Do List)</h1>
+
+        <!-- Input Section -->
+        <div class="flex flex-col sm:flex-row gap-4">
+            <input type="text" id="taskInput" placeholder="Thêm công việc mới..."
+                   class="flex-1 p-3 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:ring-blue-500 transition duration-200">
+            <button id="addButton"
+                    class="bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-700 transition duration-200 shadow-md">
+                Thêm Task
+            </button>
+        </div>
+
+        <!-- Task List Display -->
+        <div id="taskList" class="rounded-lg border border-gray-200 divide-y divide-gray-200">
+            <!-- Tasks will be rendered here by JavaScript -->
+        </div>
+        
+        <!-- Message Box for Alert/Confirmation -->
+        <div id="messageBox" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+            <div class="bg-white p-6 rounded-xl shadow-2xl w-full max-w-sm space-y-4">
+                <p id="messageText" class="text-gray-700 font-medium"></p>
+                <div class="flex justify-end space-x-3">
+                    <button id="confirmButton" class="hidden bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">Xóa</button>
+                    <button id="cancelButton" class="bg-gray-300 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-400">Đóng</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Khai báo các biến DOM
+        const taskInput = document.getElementById('taskInput');
+        const addButton = document.getElementById('addButton');
+        const taskList = document.getElementById('taskList');
+        const STORAGE_KEY = 'todoListTasks';
+
+        // Mảng State: Nơi lưu trữ duy nhất và chính xác về trạng thái công việc
+        let tasks = [];
+
+        // =============================================
+        // HÀM HIỂN THỊ VÀ TƯƠNG TÁC
+        // =============================================
+
+        /**
+         * 1. Tải mảng tasks từ LocalStorage.
+         */
+        function loadTasks() {
+            try {
+                const storedTasks = localStorage.getItem(STORAGE_KEY);
+                if (storedTasks) {
+                    // Cập nhật State từ LocalStorage
+                    tasks = JSON.parse(storedTasks);
+                }
+            } catch (error) {
+                console.error("Lỗi khi tải tasks từ localStorage:", error);
+                tasks = [];
+            }
+        }
+
+        /**
+         * 2. Lưu mảng tasks vào LocalStorage.
+         */
+        function saveTasks() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+            } catch (error) {
+                console.error("Lỗi khi lưu tasks vào localStorage:", error);
+            }
+        }
+
+        /**
+         * 3. Render (Vẽ lại) DOM dựa trên mảng State (tasks).
+         * Phương pháp: Xóa toàn bộ DOM cũ và vẽ lại DOM mới từ State.
+         */
+        function renderTasks() {
+            // Xóa tất cả các task hiện có trong DOM
+            taskList.innerHTML = ''; 
+
+            if (tasks.length === 0) {
+                taskList.innerHTML = '<p class="text-center text-gray-500 p-6">Chưa có công việc nào. Hãy thêm task đầu tiên của bạn!</p>';
+                return;
+            }
+
+            tasks.forEach((task, index) => {
+                const taskDiv = document.createElement('div');
+                taskDiv.classList.add('task-item');
+                taskDiv.dataset.index = index; // Gắn index vào DOM để dễ dàng tham chiếu
+
+                // Nội dung Task
+                taskDiv.innerHTML = `
+                    <span class="task-text text-gray-700 ${task.completed ? 'line-through text-gray-400' : ''}" 
+                          title="${task.text}">
+                        ${task.text}
+                    </span>
+                    <button class="editButton text-sm text-blue-500 hover:text-blue-700 font-medium transition duration-150 p-2 rounded-lg" data-index="${index}">
+                        Sửa
+                    </button>
+                    <button class="deleteButton text-sm text-red-500 hover:text-red-700 font-medium transition duration-150 p-2 rounded-lg" data-index="${index}">
+                        Xóa
+                    </button>
+                `;
+
+                // Thêm sự kiện đánh dấu hoàn thành
+                const taskTextSpan = taskDiv.querySelector('.task-text');
+                taskTextSpan.addEventListener('click', () => toggleCompleted(index));
+
+                // Thêm sự kiện Sửa
+                taskDiv.querySelector('.editButton').addEventListener('click', (e) => editTask(index));
+
+                // Thêm sự kiện Xóa
+                taskDiv.querySelector('.deleteButton').addEventListener('click', (e) => showConfirm(index));
+                
+                taskList.appendChild(taskDiv);
+            });
+        }
+
+        /**
+         * Thêm một task mới.
+         */
+        function addTask() {
+            const text = taskInput.value.trim();
+            if (text === "") {
+                showMessage("Vui lòng nhập nội dung công việc.");
+                return;
+            }
+
+            // 1. Cập nhật State
+            tasks.push({ text, completed: false });
+
+            // 2. Lưu State
+            saveTasks();
+
+            // 3. Render lại DOM
+            renderTasks();
+
+            // 4. Xóa input
+            taskInput.value = '';
+        }
+
+        /**
+         * Đánh dấu hoàn thành/chưa hoàn thành.
+         * @param {number} index - Chỉ số của task trong mảng tasks.
+         */
+        function toggleCompleted(index) {
+            // 1. Cập nhật State
+            tasks[index].completed = !tasks[index].completed;
+
+            // 2. Lưu State
+            saveTasks();
+
+            // 3. Render lại DOM
+            renderTasks();
+        }
+
+        /**
+         * Chỉnh sửa nội dung task.
+         * @param {number} index - Chỉ số của task trong mảng tasks.
+         */
+        function editTask(index) {
+            const currentText = tasks[index].text;
+            // Sử dụng prompt() để nhận input mới, nhưng trong môi trường Canvas, bạn nên dùng Modal tùy chỉnh.
+            const newText = prompt("Chỉnh sửa công việc:", currentText); 
+
+            if (newText !== null) { // Người dùng không bấm Cancel
+                const trimmedText = newText.trim();
+                if (trimmedText !== "" && trimmedText !== currentText) {
+                    // 1. Cập nhật State
+                    tasks[index].text = trimmedText;
+                    
+                    // 2. Lưu State
+                    saveTasks();
+                    
+                    // 3. Render lại DOM
+                    renderTasks();
+                } else if (trimmedText === "") {
+                    showMessage("Nội dung không được để trống.");
+                }
+            }
+        }
+
+        /**
+         * Xóa task.
+         * @param {number} index - Chỉ số của task trong mảng tasks.
+         */
+        function deleteTask(index) {
+            // 1. Cập nhật State (sử dụng splice để xóa phần tử)
+            tasks.splice(index, 1);
+
+            // 2. Lưu State
+            saveTasks();
+
+            // 3. Render lại DOM
+            renderTasks();
+        }
+
+        // =============================================
+        // CƠ CHẾ HIỂN THỊ THÔNG BÁO/XÁC NHẬN (Modal Mockup)
+        // =============================================
+
+        const messageBox = document.getElementById('messageBox');
+        const messageText = document.getElementById('messageText');
+        const confirmButton = document.getElementById('confirmButton');
+        const cancelButton = document.getElementById('cancelButton');
+        let currentTaskIndexToDelete = null;
+
+        /**
+         * Hiển thị thông báo chung (thay cho alert()).
+         * @param {string} message - Nội dung thông báo.
+         */
+        function showMessage(message) {
+            messageText.textContent = message;
+            confirmButton.classList.add('hidden');
+            messageBox.classList.remove('hidden');
+            cancelButton.onclick = hideMessageBox;
+        }
+
+        /**
+         * Hiển thị hộp thoại xác nhận xóa (thay cho confirm()).
+         * @param {number} index - Chỉ số của task cần xóa.
+         */
+        function showConfirm(index) {
+            currentTaskIndexToDelete = index;
+            messageText.textContent = `Bạn có chắc chắn muốn xóa công việc "${tasks[index].text}" không?`;
+            confirmButton.classList.remove('hidden');
+            
+            // Gán lại sự kiện cho nút Xác nhận
+            confirmButton.onclick = () => {
+                deleteTask(currentTaskIndexToDelete);
+                hideMessageBox();
+            };
+
+            // Gán lại sự kiện cho nút Hủy
+            cancelButton.onclick = hideMessageBox;
+            messageBox.classList.remove('hidden');
+        }
+
+        function hideMessageBox() {
+            messageBox.classList.add('hidden');
+            currentTaskIndexToDelete = null;
+        }
+
+
+        // =============================================
+        // KHỞI CHẠY ỨNG DỤNG
+        // =============================================
+        
+        // Gắn sự kiện thêm task
+        addButton.addEventListener('click', addTask);
+        taskInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                addTask();
+            }
+        });
+
+        // Tải dữ liệu và hiển thị lần đầu tiên
+        document.addEventListener('DOMContentLoaded', () => {
+            loadTasks();
+            renderTasks();
+        });
+
+    </script>
+</body>
+</html>

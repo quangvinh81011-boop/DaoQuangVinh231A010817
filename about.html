@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Về Tôi - [Tên Bạn]</title>
+    <!-- Tải Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Thiết lập font Inter mặc định */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #eef2f6; /* Màu nền nhẹ nhàng */
+        }
+        .card {
+            background-color: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+            border-radius: 1rem; /* rounded-xl */
+            padding: 2rem;
+            transition: transform 0.3s ease;
+        }
+        .section-title {
+            position: relative;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+            color: #1e3a8a; /* Màu xanh đậm */
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 60px;
+            height: 3px;
+            background-color: #3b82f6;
+            border-radius: 9999px;
+        }
+        .value-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            background-color: #f0f9ff; /* blue-50 */
+            border: 1px solid #bfdbfe; /* blue-200 */
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-8">
+
+    <!-- Main Container -->
+    <div class="max-w-4xl mx-auto space-y-8">
+
+        <!-- Header / Tuyên Bố Sứ Mệnh -->
+        <header class="card border-l-8 border-blue-600">
+            <h1 class="text-4xl sm:text-5xl font-extrabold text-gray-800 leading-tight mb-4">
+                Hành Trình Và Triết Lý Của Tôi
+            </h1>
+            <p class="text-xl text-gray-600 italic">
+                "Tôi tin rằng sự đổi mới thực sự đến từ việc kết hợp tư duy phân tích sâu sắc với sự đồng cảm về nhu cầu của người dùng."
+            </p>
+        </header>
+
+        <!-- Section: Câu Chuyện Cá Nhân (Narrative Section) -->
+        <section class="card">
+            <h2 class="text-2xl font-bold section-title">
+                1. Bối Cảnh Cá Nhân
+            </h2>
+            <div class="text-gray-600 leading-relaxed space-y-4">
+                <p>
+                    Tôi bắt đầu hành trình [Lĩnh vực chính] của mình từ [Năm bắt đầu], với niềm đam mê giải quyết các vấn đề phức tạp thông qua [Công cụ/Kỹ năng chính]. Xuất phát điểm từ [Ngành học/Nơi làm việc đầu tiên], tôi đã học được rằng thành công không chỉ dựa vào kỹ thuật mà còn phụ thuộc vào khả năng hợp tác và tư duy sáng tạo.
+                </p>
+                <p>
+                    Trong suốt [Số] năm qua, tôi đã tham gia vào các dự án [Loại dự án, ví dụ: phát triển phần mềm, tư vấn chiến lược, nghiên cứu khoa học] và đã đạt được [Thành tựu nổi bật 1]. Mỗi thử thách đều là một cơ hội để tôi trau dồi và mở rộng bộ kỹ năng của mình.
+                </p>
+                <p class="font-semibold text-gray-700">
+                    Hiện tại, tôi đang tập trung vào [Lĩnh vực chuyên sâu], tìm kiếm các cơ hội để tạo ra [Tác động mong muốn].
+                </p>
+            </div>
+        </section>
+
+        <!-- Section: Giá Trị Cốt Lõi -->
+        <section class="card">
+            <h2 class="text-2xl font-bold section-title">
+                2. Giá Trị Cốt Lõi
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
+                
+                <div class="value-item">
+                    <span class="text-2xl mr-3 text-red-500">💡</span>
+                    <div>
+                        <h3 class="font-bold text-gray-800">Đổi Mới Liên Tục</h3>
+                        <p class="text-sm text-gray-600">Luôn đặt câu hỏi và tìm kiếm giải pháp mới, không ngừng học hỏi công nghệ và phương pháp luận mới nhất.</p>
+                    </div>
+                </div>
+
+                <div class="value-item">
+                    <span class="text-2xl mr-3 text-green-500">🤝</span>
+                    <div>
+                        <h3 class="font-bold text-gray-800">Hợp Tác Toàn Diện</h3>
+                        <p class="text-sm text-gray-600">Đề cao sự minh bạch, tôn trọng ý kiến đa chiều và xây dựng một môi trường làm việc tích cực.</p>
+                    </div>
+                </div>
+
+                <div class="value-item">
+                    <span class="text-2xl mr-3 text-yellow-500">🎯</span>
+                    <div>
+                        <h3 class="font-bold text-gray-800">Hướng Đến Kết Quả</h3>
+                        <p class="text-sm text-gray-600">Tập trung vào giá trị mang lại cho khách hàng và doanh nghiệp, đo lường hiệu suất bằng tác động thực tế.</p>
+                    </div>
+                </div>
+
+                <div class="value-item">
+                    <span class="text-2xl mr-3 text-purple-500">🛡️</span>
+                    <div>
+                        <h3 class="font-bold text-gray-800">Trách Nhiệm</h3>
+                        <p class="text-sm text-gray-600">Chịu trách nhiệm hoàn toàn về công việc và cam kết chất lượng, từ khâu lên ý tưởng đến triển khai cuối cùng.</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Section: Sở Thích & Đời Sống -->
+        <section class="card">
+            <h2 class="text-2xl font-bold section-title">
+                3. Đời Sống & Sở Thích
+            </h2>
+            <div class="text-gray-600 leading-relaxed space-y-4">
+                <p>
+                    Ngoài công việc chuyên môn, tôi còn là người yêu thích [Sở thích 1, ví dụ: nhiếp ảnh, chạy bộ]. Những hoạt động này giúp tôi duy trì sự cân bằng, tái tạo năng lượng và thường xuyên truyền cảm hứng cho công việc của tôi.
+                </p>
+                <div class="flex flex-wrap gap-3 mt-4">
+                    <span class="bg-gray-200 text-gray-700 text-sm px-3 py-1 rounded-full">#NhiếpẢnhĐườngPhố</span>
+                    <span class="bg-gray-200 text-gray-700 text-sm px-3 py-1 rounded-full">#ĐọcSáchKhoaHọc</span>
+                    <span class="bg-gray-200 text-gray-700 text-sm px-3 py-1 rounded-full">#Thiền</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer / Kết nối -->
+        <footer class="text-center text-gray-500 text-sm mt-10 p-4">
+            <p>Sẵn sàng hợp tác? <a href="contact.html" class="text-blue-600 hover:text-blue-800 font-semibold">Liên hệ với tôi ngay.</a></p>
+            <p class="mt-2 text-xs">&copy; 2025 [Đào Quang Vinh]. Thiết kế bởi AI.</p>
+        </footer>
+
+    </div>
+
+</body>
+</html>

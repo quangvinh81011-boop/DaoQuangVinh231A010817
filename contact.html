@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liên Hệ - [Đào Quang Vinh ]</title>
+    <!-- Tải Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Thiết lập font Inter mặc định */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #eef2f6; /* Màu nền nhẹ nhàng */
+        }
+        .card {
+            background-color: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+            border-radius: 1rem; /* rounded-xl */
+            padding: 2rem;
+        }
+        .section-title {
+            position: relative;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+            color: #1e3a8a; /* Màu xanh đậm */
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 60px;
+            height: 3px;
+            background-color: #3b82f6;
+            border-radius: 9999px;
+        }
+        .input-field {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db; /* gray-300 */
+            border-radius: 0.5rem; /* rounded-lg */
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .input-field:focus {
+            border-color: #3b82f6; /* blue-500 */
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-8">
+
+    <!-- Main Container -->
+    <div class="max-w-4xl mx-auto space-y-8">
+
+        <!-- Header -->
+        <header class="text-center">
+            <h1 class="text-4xl sm:text-5xl font-extrabold text-gray-800">
+                Liên Hệ Với Tôi
+            </h1>
+            <p class="text-lg text-gray-500 mt-2">
+                Hãy để lại lời nhắn hoặc kết nối qua các kênh dưới đây.
+            </p>
+        </header>
+
+        <!-- Main Content Grid (Form and Info) -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+            <!-- Cột 1 & 2: Contact Form -->
+            <section class="card lg:col-span-2">
+                <h2 class="text-2xl font-bold section-title">
+                    Gửi Lời Nhắn
+                </h2>
+                <!-- Form Liên Hệ (Sử dụng mockup action) -->
+                <form action="#" method="POST" class="space-y-6">
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Họ và Tên</label>
+                        <input type="text" id="name" name="name" required placeholder="Đào Quang Vinh" class="input-field">
+                    </div>
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                        <input type="email" id="email" name="email" required placeholder="quangvinh81011@gmail.com" class="input-field">
+                    </div>
+                    <div>
+                        <label for="subject" class="block text-sm font-medium text-gray-700 mb-1">Tiêu Đề</label>
+                        <input type="text" id="subject" name="subject" required placeholder="Về cơ hội hợp tác..." class="input-field">
+                    </div>
+                    <div>
+                        <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Nội Dung</label>
+                        <textarea id="message" name="message" rows="5" required placeholder="Xin chào, tôi muốn thảo luận về..." class="input-field"></textarea>
+                    </div>
+                    
+                    <button type="submit" class="w-full sm:w-auto px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition duration-300 shadow-md">
+                        Gửi Tin Nhắn
+                    </button>
+                    <p class="text-xs text-gray-400 mt-2">Lưu ý: Đây là form mẫu, không gửi dữ liệu thực tế.</p>
+                </form>
+            </section>
+
+            <!-- Cột 3: Thông Tin Liên Hệ Khác -->
+            <section class="card bg-blue-50/50 flex flex-col justify-between">
+                <div>
+                    <h2 class="text-2xl font-bold section-title">
+                        Thông Tin Chi Tiết
+                    </h2>
+                    <div class="space-y-4 text-gray-600">
+                        <div class="flex items-center space-x-3">
+                            <!-- Icon Email (sử dụng SVG inline hoặc unicode) -->
+                            <span class="text-blue-600 text-xl">📧</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-700">Email</h4>
+                                <a href="mailto:your.email@example.com" class="hover:text-blue-600">quangvinh81011@gmail.com</a>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <!-- Icon Điện thoại -->
+                            <span class="text-blue-600 text-xl">📞</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-700">Điện thoại</h4>
+                                <span>0367981011</span>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <!-- Icon Địa chỉ -->
+                            <span class="text-blue-600 text-xl mt-1">📍</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-700">Địa chỉ (Mockup)</h4>
+                                <span>Thành phố Hồ Chí Minh, Việt Nam</span>
+                                <p class="text-xs italic mt-1 text-gray-500">
+                                    <a href="#" class="hover:underline">Xem trên bản đồ</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Social Links -->
+                <div class="pt-6 border-t border-blue-200 mt-6">
+                    <h4 class="font-semibold text-gray-700 mb-3">Kết nối nhanh</h4>
+                    <p class="text-base space-x-4">
+                        <a href="#" class="text-blue-600 hover:text-blue-800 font-semibold">LinkedIn</a>
+                        <span class="text-gray-400">|</span>
+                        <a href="#" class="text-blue-600 hover:text-blue-800 font-semibold">GitHub</a>
+                    </p>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- Footer / Liên Hệ -->
+        <footer class="text-center text-gray-500 text-sm mt-10 p-4">
+            <p>&copy; 2025 [Đào Quang Vinh]. Thiết kế bởi AI.</p>
+        </footer>
+
+    </div>
+
+</body>
+</html>
