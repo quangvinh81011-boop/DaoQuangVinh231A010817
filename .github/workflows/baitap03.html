@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Đoán Số 1-100</title>
+    <!-- Tải Tailwind CSS để hỗ trợ styling nhanh và responsive -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0fdf4; /* Light green background */
+        }
+        .game-container {
+            max-width: 400px;
+            background-color: #ffffff;
+            border: 4px solid #10b981; /* Emerald border */
+            box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.3), 0 4px 6px -2px rgba(16, 185, 129, 0.1);
+        }
+        /* =============================================
+           CSS CHO HIỆU ỨNG CONFETTI ĐƠN GIẢN
+           ============================================= */
+        .confetti-piece {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background-color: transparent;
+            opacity: 0;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 100;
+        }
+        @keyframes fall {
+            0% { transform: translate(0, -50vh) rotate(0deg); opacity: 1; }
+            100% { transform: translate(var(--x-end), 100vh) rotate(720deg); opacity: 0; }
+        }
+        .confetti-active .confetti-piece {
+            animation: fall 3s ease-in forwards;
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-8 flex justify-center items-center min-h-screen">
+
+    <div id="gameContainer" class="game-container w-full rounded-2xl p-6 md:p-8 space-y-6 text-center">
+
+        <h1 class="text-3xl font-extrabold text-green-700">Đoán Số Bí Mật</h1>
+        <p class="text-gray-500">Tôi đang nghĩ một số từ 1 đến 100. Bạn đoán xem đó là số mấy?</p>
+
+        <!-- Feedback Message -->
+        <div id="feedbackMessage" class="h-16 flex items-center justify-center bg-gray-100 rounded-lg p-3 text-lg font-semibold text-gray-700 transition duration-300">
+            Hãy bắt đầu đoán!
+        </div>
+
+        <!-- Input Section -->
+        <div class="flex flex-col sm:flex-row gap-4">
+            <input type="number" id="guessInput" min="1" max="100" placeholder="Nhập số đoán của bạn (1-100)"
+                   class="flex-1 p-3 border-2 border-gray-300 rounded-lg focus:border-green-500 focus:ring-green-500 transition duration-200 text-center text-xl font-bold">
+            <button id="guessButton"
+                    class="bg-green-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-green-700 transition duration-200 shadow-md transform hover:scale-105">
+                Thử Đoán
+            </button>
+        </div>
+        
+        <!-- Attempts Counter and Reset -->
+        <div class="flex justify-between items-center text-gray-600 font-medium pt-2">
+            <p id="attemptsCounter">Số lần thử: 0</p>
+            <button id="resetButton" class="text-sm text-red-500 hover:text-red-700 font-medium p-2 rounded-lg bg-red-50 hover:bg-red-100 transition duration-150">
+                Chơi lại
+            </button>
+        </div>
+
+        <!-- Confetti Animation Area (Initially hidden) -->
+        <div id="confetti" class="absolute inset-0 hidden">
+            <!-- 10 mảnh confetti đơn giản -->
+            <div class="confetti-piece" style="background-color: #ff99c8; --x-end: -50px; left: 10%;"></div>
+            <div class="confetti-piece" style="background-color: #a9e4f7; --x-end: 80px; left: 20%;"></div>
+            <div class="confetti-piece" style="background-color: #fcf6bd; --x-end: -10px; left: 30%;"></div>
+            <div class="confetti-piece" style="background-color: #b7ffb7; --x-end: 40px; left: 40%;"></div>
+            <div class="confetti-piece" style="background-color: #ff99c8; --x-end: -90px; left: 50%;"></div>
+            <div class="confetti-piece" style="background-color: #a9e4f7; --x-end: 20px; left: 60%;"></div>
+            <div class="confetti-piece" style="background-color: #fcf6bd; --x-end: -30px; left: 70%;"></div>
+            <div class="confetti-piece" style="background-color: #b7ffb7; --x-end: 60px; left: 80%;"></div>
+            <div class="confetti-piece" style="background-color: #ff99c8; --x-end: 0px; left: 90%;"></div>
+            <div class="confetti-piece" style="background-color: #a9e4f7; --x-end: -70px; left: 95%;"></div>
+        </div>
+
+    </div>
+
+    <script>
+        // =============================================
+        // KHAI BÁO VÀ KHỞI TẠO STATE
+        // =============================================
+        let targetNumber = 0;
+        let attempts = 0;
+        let gameOver = false;
+
+        // Khai báo DOM
+        const guessInput = document.getElementById('guessInput');
+        const guessButton = document.getElementById('guessButton');
+        const resetButton = document.getElementById('resetButton');
+        const feedbackMessage = document.getElementById('feedbackMessage');
+        const attemptsCounter = document.getElementById('attemptsCounter');
+        const confettiContainer = document.getElementById('confetti');
+        const gameContainer = document.getElementById('gameContainer');
+
+        /**
+         * Tạo số ngẫu nhiên từ 1 đến 100.
+         * Logic: Math.random() cho [0, 1), nhân với 100 cho [0, 100), Math.floor() cho [0, 99], cộng 1 cho [1, 100].
+         */
+        function generateTargetNumber() {
+            return Math.floor(Math.random() * 100) + 1;
+        }
+
+        /**
+         * Cập nhật giao diện.
+         */
+        function updateDisplay() {
+            attemptsCounter.textContent = `Số lần thử: ${attempts}`;
+        }
+
+        /**
+         * Hiển thị thông báo.
+         * @param {string} message - Nội dung thông báo.
+         * @param {string} colorClass - Màu sắc Tailwind (vd: 'text-red-500').
+         */
+        function showFeedback(message, colorClass) {
+            feedbackMessage.textContent = message;
+            feedbackMessage.className = `h-16 flex items-center justify-center bg-gray-100 rounded-lg p-3 text-lg font-semibold transition duration-300 ${colorClass}`;
+        }
+
+        /**
+         * Xử lý khi người chơi đoán đúng.
+         */
+        function handleWin() {
+            gameOver = true;
+            showFeedback(`CHÚC MỪNG! Bạn đã đoán đúng số ${targetNumber} sau ${attempts} lần thử.`, 'bg-yellow-200 text-yellow-800 animate-pulse');
+            guessButton.disabled = true;
+            
+            // Kích hoạt Confetti
+            confettiContainer.classList.remove('hidden');
+            gameContainer.classList.add('confetti-active');
+            
+            // Tự động tắt confetti sau 3 giây
+            setTimeout(() => {
+                confettiContainer.classList.add('hidden');
+                gameContainer.classList.remove('confetti-active');
+            }, 3000);
+        }
+
+        /**
+         * Kiểm tra số người dùng đoán.
+         */
+        function checkGuess() {
+            if (gameOver) return;
+
+            const guess = parseInt(guessInput.value.trim());
+
+            // 1. Xử lý Input và Validation
+            if (isNaN(guess) || guess < 1 || guess > 100) {
+                showFeedback("LỖI: Vui lòng nhập một số hợp lệ từ 1 đến 100.", 'text-red-600');
+                guessInput.value = '';
+                return;
+            }
+
+            // 2. Cập nhật State
+            attempts++;
+            updateDisplay();
+
+            // 3. Logic so sánh
+            if (guess === targetNumber) {
+                handleWin();
+            } else if (guess < targetNumber) {
+                showFeedback("QUÁ THẤP. Hãy đoán một số lớn hơn.", 'text-orange-500');
+            } else { // guess > targetNumber
+                showFeedback("QUÁ CAO. Hãy đoán một số nhỏ hơn.", 'text-blue-500');
+            }
+            
+            // Xóa input sau khi đoán
+            guessInput.value = '';
+        }
+        
+        /**
+         * Khởi động lại trò chơi.
+         */
+        function resetGame() {
+            targetNumber = generateTargetNumber();
+            attempts = 0;
+            gameOver = false;
+            
+            guessInput.value = '';
+            guessButton.disabled = false;
+            
+            showFeedback("BẮT ĐẦU VÁN MỚI! Hãy đoán số bí mật.", 'text-gray-700');
+            updateDisplay();
+            
+            // Đảm bảo confetti bị ẩn và animation bị hủy
+            confettiContainer.classList.add('hidden');
+            gameContainer.classList.remove('confetti-active');
+
+            console.log("Số bí mật mới (chỉ để debug):", targetNumber);
+        }
+
+        // =============================================
+        // GẮN SỰ KIỆN VÀ KHỞI CHẠY
+        // =============================================
+        
+        guessButton.addEventListener('click', checkGuess);
+        resetButton.addEventListener('click', resetGame);
+        
+        // Cho phép dùng phím Enter để đoán
+        guessInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                checkGuess();
+            }
+        });
+
+        // Khởi tạo trò chơi lần đầu
+        document.addEventListener('DOMContentLoaded', resetGame);
+
+    </script>
+</body>
+</html>

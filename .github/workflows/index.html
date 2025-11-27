@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hồ Sơ Cá Nhân - [Đào Quang Vinh]</title>
+    <!-- Tải Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Thiết lập font Inter mặc định */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #eef2f6; /* Màu nền nhẹ nhàng */
+        }
+        .card {
+            background-color: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+            border-radius: 1rem; /* rounded-xl */
+            padding: 2rem;
+            transition: transform 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-2px);
+        }
+        .section-title {
+            position: relative;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+            color: #1e3a8a; /* Màu xanh đậm */
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 60px;
+            height: 3px;
+            background-color: #3b82f6;
+            border-radius: 9999px;
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-8">
+
+    <!-- Main Container -->
+    <div class="max-w-4xl mx-auto space-y-8">
+
+        <!-- Header / Giới Thiệu Ngắn -->
+        <header class="card border-t-4 border-blue-600">
+            <div class="flex flex-col md:flex-row items-center space-y-6 md:space-y-0 md:space-x-8">
+                <!-- Avatar -->
+                <div class="flex-shrink-0">
+                    <img src="images/chandung.png" alt="Ảnh Cá Nhân" class="w-32 h-32 rounded-full object-cover border-4 border-gray-200 shadow-md">
+                </div>
+                <!-- Thông Tin Cơ Bản -->
+                <div class="text-center md:text-left">
+                    <h1 class="text-4xl sm:text-5xl font-extrabold text-gray-800 leading-tight">
+                        [Đào Quang Vinh]
+                    </h1>
+                    <p class="text-xl sm:text-2xl font-semibold text-blue-600 mt-1">
+                        Chuyên Gia [an toàn thông tin]
+                    </p>
+                    <div class="text-gray-500 mt-3 text-sm flex flex-wrap justify-center md:justify-start gap-4">
+                         <span>Email: <a href="mailto:your.email@example.com" class="text-blue-500 hover:underline">quangvinh81011@gmail.com</a></span>
+                         <span>Điện thoại: 0367981011</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Section: Tóm Tắt Chuyên Môn -->
+        <section class="card">
+            <h2 class="text-2xl font-bold section-title">
+                1. Tóm Tắt
+            </h2>
+            <div class="text-gray-600 leading-relaxed space-y-4">
+                <p>
+                    Tôi là một cá nhân [Tính từ như: sáng tạo, nhiệt huyết, có kinh nghiệm] với [Số] năm kinh nghiệm trong lĩnh vực [Lĩnh vực chính]. Tôi chuyên về [Kỹ năng 1] và [Kỹ năng 2], và có khả năng làm việc hiệu quả trong môi trường [Mô tả môi trường].
+                </p>
+                <p>
+                    Tôi luôn tìm kiếm cơ hội để áp dụng kỹ năng giải quyết vấn đề và đóng góp vào sự phát triển chung của đội nhóm. Mục tiêu nghề nghiệp của tôi là [Mục tiêu].
+                </p>
+            </div>
+        </section>
+
+        <!-- Section: Kỹ Năng Chuyên Môn -->
+        <section class="card">
+            <h2 class="text-2xl font-bold section-title">
+                2. Kỹ Năng (Skills)
+            </h2>
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mt-6">
+                <!-- Kỹ Năng Cứng (Technical Skills) -->
+                <div class="p-3 bg-blue-50 text-blue-700 font-medium rounded-lg text-center border border-blue-200 hover:bg-blue-100">
+                    Lập trình Python
+                </div>
+                <div class="p-3 bg-blue-50 text-blue-700 font-medium rounded-lg text-center border border-blue-200 hover:bg-blue-100">
+                    Phân tích Dữ liệu
+                </div>
+                <div class="p-3 bg-blue-50 text-blue-700 font-medium rounded-lg text-center border border-blue-200 hover:bg-blue-100">
+                    Quản lý Dự án (Scrum)
+                </div>
+                <div class="p-3 bg-blue-50 text-blue-700 font-medium rounded-lg text-center border border-blue-200 hover:bg-blue-100">
+                    Thiết kế UI/UX
+                </div>
+                <!-- Kỹ Năng Mềm (Soft Skills) -->
+                <div class="p-3 bg-gray-50 text-gray-700 font-medium rounded-lg text-center border border-gray-200 hover:bg-gray-100">
+                    Lãnh đạo nhóm
+                </div>
+                <div class="p-3 bg-gray-50 text-gray-700 font-medium rounded-lg text-center border border-gray-200 hover:bg-gray-100">
+                    Giao tiếp hiệu quả
+                </div>
+                <div class="p-3 bg-gray-50 text-gray-700 font-medium rounded-lg text-center border border-gray-200 hover:bg-gray-100">
+                    Giải quyết vấn đề
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Kinh Nghiệm Làm Việc / Dự Án -->
+        <section class="card">
+            <h2 class="text-2xl font-bold section-title">
+                3. Kinh Nghiệm & Dự Án
+            </h2>
+            <div class="space-y-6 mt-6">
+                <!-- Mục Kinh Nghiệm/Dự Án 1 -->
+                <div class="border-l-4 border-green-500 pl-4 py-2">
+                    <h3 class="text-xl font-semibold text-gray-700">Dự án Xây dựng Hệ thống CRM</h3>
+                    <p class="text-sm text-gray-500 mt-1 italic">Vị trí: Lập trình viên chính | 01/2023 - Hiện tại</p>
+                    <ul class="list-disc list-inside text-gray-600 mt-2 space-y-1">
+                        <li>Phát triển Back-end API với Node.js, giúp giảm 30% thời gian phản hồi.</li>
+                        <li>Thiết kế cơ sở dữ liệu MongoDB, hỗ trợ hơn 10.000 người dùng hàng ngày.</li>
+                        <li>Đóng góp vào việc triển khai tính năng báo cáo tự động, tiết kiệm 15 giờ làm việc/tuần.</li>
+                    </ul>
+                </div>
+
+                <!-- Mục Kinh Nghiệm/Dự Án 2 -->
+                <div class="border-l-4 border-yellow-500 pl-4 py-2">
+                    <h3 class="text-xl font-semibold text-gray-700">Công ty ABC</h3>
+                    <p class="text-sm text-gray-500 mt-1 italic">Vị trí: Thực tập sinh Marketing | 06/2022 - 12/2022</p>
+                    <ul class="list-disc list-inside text-gray-600 mt-2 space-y-1">
+                        <li>Phân tích dữ liệu chiến dịch quảng cáo, cải thiện ROI 10%.</li>
+                        <li>Hỗ trợ quản lý nội dung trên các nền tảng mạng xã hội.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer / Liên Hệ -->
+        <footer class="text-center text-gray-500 text-sm mt-10 p-4">
+            <p>Kết nối với tôi:</p>
+            <p class="mt-2 text-base space-x-4">
+                <a href="#" class="text-blue-600 hover:text-blue-800 font-semibold">LinkedIn</a>
+                <span class="text-gray-400">|</span>
+                <a href="#" class="text-blue-600 hover:text-blue-800 font-semibold">GitHub</a>
+                <span class="text-gray-400">|</span>
+                <a href="#" class="text-blue-600 hover:text-blue-800 font-semibold">Portfolio khác</a>
+            </p>
+            <p class="mt-4 text-xs">&copy; 2025 [Đào Quang Vinh]. Thiết kế bởi AI.</p>
+        </footer>
+
+    </div>
+
+</body>
+</html>
